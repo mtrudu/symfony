@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\HttpClient\DataCollector;
 
+use Symfony\Component\HttpClient\CurlTrace;
 use Symfony\Component\HttpClient\TraceableHttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -135,6 +136,7 @@ final class HttpClientDataCollector extends DataCollector
             $info = array_diff_key($info, $debugInfo) + ['debug_info' => $debugInfo];
             $traces[$i]['info'] = $this->cloneVar($info);
             $traces[$i]['options'] = $this->cloneVar($trace['options']);
+            $traces[$i]['curl'] = (string) (new CurlTrace($trace));
         }
 
         return [$errorCount, $traces];

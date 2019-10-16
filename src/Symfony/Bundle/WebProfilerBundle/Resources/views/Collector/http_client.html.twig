@@ -81,6 +81,7 @@
                                             <span class="label status-{{ responseStatus }}">
                                                 {{ trace.http_code }}
                                             </span>
+                                            <button class="copy-as-curl" data-clipboard-text="{{ trace.curl }}" >Copy as Curl</button>
                                         </th>
                                         <td>
                                             {{ profiler_dump(trace.info, maxDepth=1) }}
@@ -95,4 +96,22 @@
             {% endfor %}
         {% endif %}
     </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.4.0/clipboard.min.js"></script>
+    {#    <script>#}
+    {#        {% include '@WebProfiler/Collector/clipboard.js' %}#}
+    {#        {% include '@WebProfiler/Collector/clipboard-action.js' %}#}
+    {#    </script>#}
+
+    <script>{% autoescape 'js' %}
+        window.addEventListener('load', function onLoad() {
+            console.log('douda');
+            var clipboard = new Clipboard('.copy-as-curl');
+
+            clipboard.on('success', function(e) {
+                console.info('Text:', e.text);
+                e.clearSelection();
+            });
+        });
+        {% endautoescape %}
+    </script>
 {% endblock %}
